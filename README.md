@@ -4,7 +4,7 @@
 
 Built for Kalyani, West Bengal. Live at **https://souradip121.github.io/spotted/**.
 
-![Spotted: the map, a frame, and Free now](docs/screens.png)
+![Spotted: the map, a frame, and Free now](docs/screens.jpg)
 
 - **Map:** MapLibre GL on free [OpenFreeMap](https://openfreemap.org) vector tiles, with a dark "darkroom" style. Photo pins are round thumbnails; friends who share their location show up with "free till 5 pm". Filters: Friends, Photos, Free now.
 - **Frames:** photos are resized on the phone to about 1,600 px WebP and stripped of EXIF (GPS included) before upload. Each gets a caption, a place name and a pin that is either **exact** or **area only** (about 500 m).

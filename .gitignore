@@ -5,3 +5,4 @@ supabase/.temp/
 .env
 *.log
 node_modules/
+screenshots/
