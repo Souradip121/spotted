@@ -1,0 +1,7 @@
+# local only
+.impeccable/
+demo/_raw/
+supabase/.temp/
+.env
+*.log
+node_modules/

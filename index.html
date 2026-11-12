@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="color-scheme" content="dark">
+  <title>Spotted · Kalyani</title>
+  <meta name="description" content="A photo-club map of Kalyani. Pin your photos where you took them, see which friends are free, and share your location only with friends you accept.">
+  <meta property="og:title" content="Spotted · Kalyani">
+  <meta property="og:description" content="Kalyani's photo map, made by its students.">
+  <meta property="og:image" content="https://souradip121.github.io/spotted/assets/og.png">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/icon-192.png" sizes="192x192">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@500;600;700&family=Barlow+Condensed:wght@500;600&family=Barlow+Semi+Condensed:wght@400;500;600&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="vendor/maplibre-gl.css">
+  <link rel="stylesheet" href="styles/app.css">
+  <script src="config.js"></script>
+  <script src="vendor/supabase.js" defer></script>
+  <script src="vendor/maplibre-gl.js" defer></script>
+  <script type="importmap">
+    { "imports": { "preact-htm": "./vendor/preact-htm.js" } }
+  </script>
+  <script type="module" src="src/main.js"></script>
+</head>
+<body>
+<!--
+THESIS: Kalyani as a contact sheet. The town map is the developing tray; every pin is a frame someone shot, and friends glow on it only by their choice. It refuses the generic white social feed and the neon "find my friends" radar.
+OWN-WORLD: Darkroom. True black, film-strip bands with sprocket holes framing photos and the nav, a red safelight accent (#e3262b) for action, green only for "free", amber edge print (frame numbers, film stock) in condensed caps, live grain over everything. Antonio for the wordmark, Barlow (semi/condensed) for UI.
+STORY: Open, see the town through classmates' photos, see who is free right now, add friends, post a frame, go ghost in one tap.
+FIRST VIEWPORT: Wordmark top-left, search and settings right; filter chips (Friends · Photos · Free now · Ghost) under it; the dark Kalyani map fills the middle with round photo pins and friend avatars labelled "free till 5 pm"; the film-strip nav at the bottom with the red shutter (post) in the middle.
+FORM: Pinned darkroom concept (spotted_a_darkroom.png), the user's own pick; no roll. Seed: pinned-by-brief.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->
+  <div id="app"></div>
+  <noscript><p class="noscript">Spotted needs JavaScript to show the map.</p></noscript>
+</body>
+</html>

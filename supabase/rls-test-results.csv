@@ -1,0 +1,34 @@
+n,test,expected,actual,pass
+1,friend can read live location,1,1,true
+2,friend can read free slots + free-till,1,1,true
+3,non-friend cannot read live location,0,0,true
+4,non-friend cannot read free slots,0,0,true
+5,non-friend sees no presence rows at all,0,0,true
+6,non-friend cannot change someone's free slots,0 rows,0 rows,true
+7,cannot write a location as someone else,denied,denied,true
+8,stranger cannot see other people's friendships,0,0,true
+9,posts are visible to members (before any block),1,1,true
+10,pending request does not unlock location,0,0,true
+11,pending request does not unlock free slots,0,0,true
+12,"ignored request still reads ""outgoing"" to the sender",outgoing,outgoing,true
+13,sender cannot see the ignored status,0,0,true
+14,live location rounded to ~100 m and capped at 2 h,"22.973,88.447 (<=2h)","22.973,88.447 (<=2h)",true
+15,"""area only"" pin never stores the exact spot",snapped (not 22.973456),"22.97475,88.44552",true
+16,cannot post a photo path outside your own folder,denied,denied,true
+17,expired live location is hidden even from friends,0,0,true
+18,blocker no longer sees the blocked profile,0,0,true
+19,blocker no longer sees their posts,0,0,true
+20,blocked person no longer sees the blocker (both ways),0,0,true
+21,blocked person cannot see the block row,0,0,true
+22,blocked person cannot send a friend request,refused,refused,true
+23,blocking a friend hides their location,0,0,true
+24,blocking a friend hides their free slots,0,0,true
+25,...and hides the blocker's location from them,0,0,true
+26,block deletes the friendship,0,0,true
+27,members can file but not read reports,denied,denied,true
+28,storage: can upload into your own folder,allowed,allowed,true
+29,storage: cannot upload into someone else's folder,denied,denied,true
+30,storage: signed-in members can read photos,1,1,true
+31,storage: cannot rename or overwrite someone else's photo,0 rows,0 rows,true
+32,signed-out visitors can read nothing,denied,denied,true
+33,storage: signed-out visitors see no photos,0,0,true
