@@ -411,7 +411,7 @@ body::after {
 .topbar.center { padding-left: 6px; padding-right: 6px; }
 .topbar.center .title { position: absolute; left: 50%; transform: translateX(-50%); font: 600 1.7rem/1 var(--font-display); }
 .page { padding: 4px 20px 32px; }
-.stack { display: grid; gap: var(--gap, 16px); }
+.stack { display: grid; gap: var(--gap, 16px); grid-template-columns: minmax(0, 1fr); }
 .row { display: flex; align-items: center; gap: var(--gap, 12px); }
 .row.between { justify-content: space-between; }
 .grow { flex: 1; min-width: 0; }
@@ -691,8 +691,8 @@ body::after {
 
 .grid {
   display: grid;
-  grid-template-columns: minmax(84px, 1.25fr) repeat(6, minmax(0, 1fr));
-  gap: 6px 5px;
+  grid-template-columns: minmax(100px, 1.35fr) repeat(6, minmax(0, 1fr));
+  gap: 6px 4px;
   align-items: center;
 }
 .grid .dayhead { text-align: center; font: 500 .8rem/1.25 var(--font-ui); color: var(--text-2); }
@@ -700,7 +700,7 @@ body::after {
 .grid .dayhead.today { color: var(--red-hot); }
 .grid .dayhead.today b { color: var(--red-hot); }
 .grid .who { display: flex; align-items: center; gap: 9px; min-width: 0; text-decoration: none; color: inherit; }
-.grid .who .avatar { --s: 38px; font-size: .95rem; }
+.grid .who .avatar { --s: 34px; font-size: .9rem; }
 .grid .who span { font: 500 .95rem/1.15 var(--font-ui); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .daycell {
   position: relative;
@@ -733,7 +733,7 @@ body::after {
 .week-editor .slot.on { background: var(--green); border-color: var(--green); }
 
 .request-card { margin: 0 -20px; }
-.request-card .inner { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: #0b0b0a; }
+.request-card .inner { display: flex; align-items: flex-start; gap: 14px; padding: 14px 20px; background: #0b0b0a; }
 .request-card .avatar { --s: 54px; }
 
 .list { display: grid; }
@@ -889,8 +889,8 @@ body::after {
 }
 @media (max-width: 360px) {
   .wordmark { font-size: 2.2rem; }
-  .grid { grid-template-columns: 70px repeat(6, minmax(0, 1fr)); }
-  .grid .who .avatar { --s: 30px; }
+  .grid { grid-template-columns: 88px repeat(6, minmax(0, 1fr)); }
+  .grid .who .avatar { --s: 28px; }
 }
 
 /* ---------------------------------------------------------------- odds and ends */

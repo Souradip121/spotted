@@ -161,12 +161,12 @@ function RequestCard({ r }) {
     <div class="inner">
       <a href=${'#/u/' + r.other_id}><${Avatar} person=${{ name: r.name, avatar_path: r.avatar_path, is_demo: r.is_demo }} size=${54} /></a>
       <div class="grow" style="min-width:0">
-        <div class="h3 ellipsis">${r.name} sent you a request</div>
+        <div class="h3">${r.name} sent you a request</div>
         <div class="faint ui small">${r.mutuals ? `You have ${plural(r.mutuals, 'mutual friend')}` : r.college || 'No mutual friends yet'}</div>
-      </div>
-      <div class="row" style="--gap:8px">
-        <button class="btn sm" disabled=${busy} onClick=${() => act(true)}>Accept</button>
-        <button class="btn sm quiet" disabled=${busy} onClick=${() => act(false)}>Ignore</button>
+        <div class="row" style="--gap:8px;margin-top:10px">
+          <button class="btn sm" disabled=${busy} onClick=${() => act(true)}>Accept</button>
+          <button class="btn sm quiet" disabled=${busy} onClick=${() => act(false)}>Ignore</button>
+        </div>
       </div>
     </div>
     <${Sprockets} />
