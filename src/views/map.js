@@ -1,6 +1,6 @@
 // The town map: photo pins, friends who chose to share, filter chips, ghost.
 import { html, useEffect, useRef, useState } from 'preact-htm';
-import { useStore, setState, getState, go, toast, fail, freeState, freeLabel, fmtHour, initials } from '../lib/core.js';
+import { useStore, setState, getState, go, toast, fail, freeState, freeLabel, fmtHour, initials, distM } from '../lib/core.js';
 import { resolveUrl } from '../lib/media.js';
 import { startSharing, stopSharing, locateOnce } from '../lib/live.js';
 import { createMap, TOWN } from '../map/style.js';
@@ -181,8 +181,14 @@ export function MapScreen({ active }) {
       .filter(([x, y]) => x > w && x < e && y > so && y < n);
     framed.current = true;
     if (pts.length < 2) return;
+    // A phone shows ~2 km of town at a readable zoom, so frame the busiest
+    // part: everything within 1.8 km of the median pin.
+    const med = (a) => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)];
+    const mid = [med(pts.map((q) => q[1])), med(pts.map((q) => q[0]))];
+    const core = pts.filter(([x, y]) => distM(mid, [y, x]) < 1800);
+    if (core.length < 2) return;
     map.resize(); // the container may have changed size before the first frame
-    const b = pts.reduce((bb, c) => bb.extend(c), new window.maplibregl.LngLatBounds(pts[0], pts[0]));
+    const b = core.reduce((bb, c) => bb.extend(c), new window.maplibregl.LngLatBounds(core[0], core[0]));
     map.fitBounds(b, { padding: { top: 60, bottom: 70, left: 64, right: 64 }, maxZoom: 15, duration: 0 });
   }, [ready, postsLoaded, posts, presence]);
 
