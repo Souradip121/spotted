@@ -15,7 +15,7 @@ const GoogleG = () => html`<svg width="20" height="20" viewBox="0 0 48 48" aria-
 function DriftingMap() {
   const el = useRef();
   useEffect(() => {
-    const map = createMap(el.current, { interactive: false, zoom: 14.1, center: [88.4425, 22.9735], attribution: 'top-right' });
+    const map = createMap(el.current, { interactive: false, zoom: 14.1, center: [88.4425, 22.9735], attribution: 'top-right', labels: false });
     let raf;
     let t0;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -55,7 +55,8 @@ export function SignIn({ error }) {
           <ul class="safety">
             <li><${Icon} name="ghost" />Your live location is off until you turn it on, and only accepted friends ever see it.</li>
             <li><${Icon} name="pin" />Pin a photo exactly, or just to its area (about 500 m).</li>
-            <li><${Icon} name="flag" />Report and block on every profile and photo. For students 18 and over.</li>
+            <li><${Icon} name="flag" />Report and block on every profile and photo.</li>
+            <li><${Icon} name="shield" />For students 18 and over.</li>
           </ul>
         </div>
         <${Sprockets} />

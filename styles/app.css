@@ -200,13 +200,14 @@ body::after {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  height: 38px;
-  padding: 0 15px;
+  height: 36px;
+  padding: 0 12px;
   border-radius: var(--pill);
   border: 1px solid var(--line-2);
   background: var(--ink-2);
   color: var(--text);
-  font: 500 .97rem/1 var(--font-ui);
+  font: 500 .93rem/1 var(--font-ui);
+  position: relative;
   white-space: nowrap;
   flex: none;
   transition: background .2s, border-color .2s, color .2s, transform .2s var(--ease);
@@ -405,8 +406,10 @@ body::after {
   align-items: center;
   gap: 8px;
   padding: calc(14px + var(--safe-t)) 14px 10px 20px;
-  background: linear-gradient(#000 84%, rgba(0, 0, 0, 0));
+  background: #000;
 }
+.topbar::after { content: ""; position: absolute; left: 0; right: 0; top: 100%; height: 14px; background: linear-gradient(#000, rgba(0, 0, 0, 0)); pointer-events: none; }
+.mapscreen .topbar::after, .topbar.center::after { display: none; }
 .topbar .spacer { flex: 1; }
 .topbar.center { padding-left: 6px; padding-right: 6px; }
 .topbar.center .title { position: absolute; left: 50%; transform: translateX(-50%); font: 600 1.7rem/1 var(--font-display); }
@@ -494,8 +497,8 @@ body::after {
 .mapscreen.off, .mapscreen.off * { visibility: hidden !important; }
 .chips {
   display: flex;
-  gap: 8px;
-  padding: 2px 14px 12px;
+  gap: 6px;
+  padding: 2px 12px 12px;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -695,7 +698,7 @@ body::after {
 .grid {
   display: grid;
   grid-template-columns: minmax(100px, 1.35fr) repeat(6, minmax(0, 1fr));
-  gap: 6px 4px;
+  gap: 5px 4px;
   align-items: center;
 }
 .grid .dayhead { text-align: center; font: 500 .8rem/1.25 var(--font-ui); color: var(--text-2); }
@@ -707,7 +710,7 @@ body::after {
 .grid .who span { font: 500 .95rem/1.15 var(--font-ui); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .daycell {
   position: relative;
-  height: 56px;
+  height: 42px;
   border-radius: 8px;
   background: #121211;
   border: 1px solid #1d1c1b;
@@ -727,7 +730,13 @@ body::after {
 .daycell.mine:hover { border-color: #45423f; }
 .grid .you span { color: var(--text); }
 
-.freebar { display: flex; gap: 8px; flex-wrap: wrap; }
+.freebar { display: flex; align-items: center; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -20px; padding: 0 20px; }
+.freebar::-webkit-scrollbar { display: none; }
+.freebar-label { flex: none; margin-right: 4px; white-space: nowrap; }
+.chip.sm { height: 34px; padding: 0 11px; font-size: .9rem; }
+.edit-week { display: block; font: 500 .74rem/1.2 var(--font-ui); color: var(--red-hot); }
+.demo-mark { display: block; font-size: .6rem; letter-spacing: .14em; margin-top: 2px; }
+.pin-label .demo-mark { display: inline; margin: 0 0 0 2px; font-size: .58rem; }
 
 .week-editor { display: grid; grid-template-columns: 44px repeat(6, 1fr); gap: 4px; user-select: none; touch-action: none; }
 .week-editor .hh { font: 500 .78rem/1 var(--font-ui); color: var(--text-3); text-align: right; padding-right: 6px; align-self: center; font-variant-numeric: tabular-nums; }
@@ -817,11 +826,11 @@ body::after {
 .signin .hero { padding: calc(40px + var(--safe-t)) 24px 0; flex: 1; display: flex; flex-direction: column; }
 .signin .wordmark { font-size: clamp(4.4rem, 22vw, 6rem); line-height: .9; }
 .signin .tag { font: 500 1.25rem/1.3 var(--font-ui); color: var(--text-2); margin: 22px 0 0; max-width: 24ch; }
-.signin .form-strip { margin-top: auto; }
+.signin .form-strip { margin: auto -24px 0; }
 .signin .form { padding: 22px 22px 18px; background: rgba(5, 5, 5, .96); display: grid; gap: 16px; }
 .signin .safety { display: grid; gap: 8px; padding: 0; margin: 0; list-style: none; }
 .signin .safety li { display: flex; gap: 10px; align-items: flex-start; font: 400 .9rem/1.35 var(--font-ui); color: var(--text-2); }
-.signin .safety .icon { width: 18px; height: 18px; color: var(--green); margin-top: 1px; }
+.signin .safety .icon { width: 18px; height: 18px; color: var(--amber); margin-top: 1px; }
 .signin footer { padding: 12px 22px calc(16px + var(--safe-b)); background: rgba(5, 5, 5, .96); }
 .error-text { color: #ff8a8c; font: 500 .92rem/1.35 var(--font-ui); }
 
@@ -870,7 +879,7 @@ body::after {
   animation: toast-in .4s var(--ease);
   pointer-events: auto;
 }
-.toast .icon { width: 20px; height: 20px; color: var(--green); }
+.toast .icon { width: 20px; height: 20px; color: var(--text-2); }
 .toast.error .icon { color: var(--red-hot); }
 @keyframes toast-in { from { opacity: 0; transform: translateY(12px) scale(.98); } }
 
@@ -908,3 +917,20 @@ body::after {
 /* Screenshot mode (?shot=N): no motion, everything already developed. */
 .shot *, .shot *::before, .shot *::after { animation: none !important; transition: none !important; }
 .shot .develop { opacity: 1; filter: none; }
+
+/* ---------------------------------------------------------------- review fixes */
+/* Ghost on is the safe default: a neutral switch, not an alarm. */
+.switch.ghost.on { background: var(--text-2); border-color: var(--text-2); }
+.switch.ghost.on::after { background: #0b0b0a; }
+/* 44 px hit areas for compact controls. */
+.chip::after, .btn.sm::after, .place-chip::after, .link-btn::after, .seg.small button::after, .comment .icon-btn::after {
+  content: ""; position: absolute; inset: -5px -2px;
+}
+.btn.sm, .place-chip, .link-btn, .comment .icon-btn { position: relative; }
+.place-chip { position: relative; }
+/* Focus stays visible on red fills. */
+.btn:focus-visible, .chip[aria-pressed="true"]:focus-visible, .seg button[aria-selected="true"]:focus-visible, .shutter:focus-visible { outline-color: var(--text); }
+/* Autofill keeps the darkroom. */
+.input:-webkit-autofill, .input:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 60px var(--ink-2) inset; -webkit-text-fill-color: var(--text); caret-color: var(--red-hot); }
+/* Expanded map credit never runs under the locate button. */
+.maplibregl-ctrl-attrib.maplibregl-compact-show { max-width: calc(100% - 80px); }

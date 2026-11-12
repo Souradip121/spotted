@@ -97,14 +97,10 @@ function FreeTill() {
     try { await setFreeUntil(d); toast(d ? `Friends see you're free till ${fmtHour(d)}.` : 'Free status cleared.'); } catch (e) { fail(e); }
   };
   const statusOn = mine?.free_until && new Date(mine.free_until) > now;
-  return html`<div class="stack" style="--gap:10px">
-    <div class="row between">
-      <span class="h3">${statusOn ? `You're free till ${fmtHour(new Date(mine.free_until))}` : st.free ? `Your week says ${freeLabel(st)}` : 'Free right now?'}</span>
-      ${statusOn ? html`<button class="link-btn" onClick=${() => set(null)}>Clear</button>` : null}
-    </div>
-    <div class="freebar">
-      ${opts.map((d) => html`<button class="chip" aria-pressed=${statusOn && new Date(mine.free_until).getHours() === d.getHours()} onClick=${() => set(d)}>till ${fmtHour(d)}</button>`)}
-    </div>
+  return html`<div class="freebar" role="group" aria-label="Tell friends you're free">
+    <span class="h3 freebar-label">${statusOn ? `Free till ${fmtHour(new Date(mine.free_until))}` : st.free ? freeLabel(st).replace('free', 'Free') : 'Free now?'}</span>
+    ${opts.slice(0, 3).map((d) => html`<button class="chip sm" aria-pressed=${statusOn && new Date(mine.free_until).getHours() === d.getHours()} onClick=${() => set(d)}>till ${fmtHour(d)}</button>`)}
+    ${statusOn ? html`<button class="chip sm" onClick=${() => set(null)} aria-label="Clear free status"><${Icon} name="x" cls="sm" /></button>` : null}
   </div>`;
 }
 
@@ -138,10 +134,10 @@ function FreeNow() {
     <div class="grid" role="table" aria-label="Free hours this week, 8 am to 8 pm">
       <span></span>
       ${dates.map((d, i) => html`<span class=${`dayhead ${i === todayIdx ? 'today' : ''}`}>${DAYS[i]}<b>${d.getDate()}</b></span>`)}
-      <button class="who you" onClick=${edit} style="text-align:left"><${Avatar} person=${me} size=${38} /><span>You<br /><small class="faint" style="font-size:.78rem">edit</small></span></button>
+      <button class="who you" onClick=${edit} style="text-align:left"><${Avatar} person=${me} size=${38} /><span>You<small class="edit-week">Edit week</small></span></button>
       ${DAYS.map((_, d) => html`<${DayCell} grid=${myGrid} day=${d} today=${d === todayIdx} nowRow=${nowRow} mine onEdit=${edit} />`)}
       ${rows.map(({ f, st }) => html`
-        <a class="who" href=${'#/u/' + f.other_id} title=${freeLabel(st) || ''}><${Avatar} person=${{ name: f.name, avatar_path: f.avatar_path, is_demo: f.is_demo }} size=${38} /><span>${f.name}</span></a>
+        <a class="who" href=${'#/u/' + f.other_id} title=${freeLabel(st) || ''}><${Avatar} person=${{ name: f.name, avatar_path: f.avatar_path, is_demo: f.is_demo }} size=${38} /><span>${f.name}${f.is_demo ? html`<small class="edge demo-mark">DEMO</small>` : null}</span></a>
         ${DAYS.map((_, d) => html`<${DayCell} grid=${slots[f.other_id]?.grid || EMPTY_GRID} day=${d} today=${d === todayIdx} nowRow=${nowRow} />`)}
       `)}
     </div>
@@ -161,7 +157,7 @@ function RequestCard({ r }) {
     <div class="inner">
       <a href=${'#/u/' + r.other_id}><${Avatar} person=${{ name: r.name, avatar_path: r.avatar_path, is_demo: r.is_demo }} size=${54} /></a>
       <div class="grow" style="min-width:0">
-        <div class="h3">${r.name} sent you a request</div>
+        <div class="h3">${r.name} sent you a request ${r.is_demo ? html`<span class="demo-tag" style="vertical-align:2px;margin-left:4px">Demo</span>` : null}</div>
         <div class="faint ui small">${r.mutuals ? `You have ${plural(r.mutuals, 'mutual friend')}` : r.college || 'No mutual friends yet'}</div>
         <div class="row" style="--gap:8px;margin-top:10px">
           <button class="btn sm" disabled=${busy} onClick=${() => act(true)}>Accept</button>
@@ -170,7 +166,7 @@ function RequestCard({ r }) {
       </div>
     </div>
     <${Sprockets} />
-    <${EdgePrint} left="SPOTTED 400" mid="REQ" arrow=${false} />
+    <${EdgePrint} left=${r.is_demo ? 'DEMO 400' : 'SPOTTED 400'} arrow=${false} />
   </div>`;
 }
 

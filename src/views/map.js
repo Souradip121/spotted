@@ -60,26 +60,58 @@ function friendPin(person, label, kind, href) {
   const text = document.createElement('span');
   text.textContent = label ? `${person.name} · ${label}` : person.name;
   tag.append(dot, text);
+  if (person.is_demo) {
+    const demo = document.createElement('span');
+    demo.className = 'edge demo-mark';
+    demo.textContent = 'DEMO';
+    tag.append(demo);
+  }
   el.append(tag);
   return el;
 }
 
-// Spread pins that land on the same spot (area-only frames share cell centres).
-function spread(items) {
-  const groups = new Map();
-  items.forEach((it) => {
-    const k = it.lat.toFixed(4) + ',' + it.lng.toFixed(4);
-    if (!groups.has(k)) groups.set(k, []);
-    groups.get(k).push(it);
+// Pins are HTML, so the map's own label collision doesn't see them. After
+// every move, nudge overlapping pins apart on screen (a few px, never more
+// than ~70), so a busy corner of town still reads pin by pin.
+function relax(map, markers) {
+  const W = map.getContainer().clientWidth;
+  const H = map.getContainer().clientHeight;
+  const items = [];
+  markers.forEach((m) => {
+    const p = map.project(m.getLngLat());
+    const base = m._base || [0, 0];
+    if (p.x < -120 || p.y < -120 || p.x > W + 120 || p.y > H + 120) { m.setOffset(base); return; }
+    const el = m.getElement();
+    const w = el.offsetWidth || 56;
+    const h = el.offsetHeight || 66;
+    // Marker anchors: photo pins sit on their tail (bottom), friend pins on
+    // the avatar centre (top + base offset).
+    const cy = m._anchor === 'bottom' ? p.y + base[1] - h / 2 : p.y + base[1] + h / 2;
+    items.push({ m, base, x: p.x + base[0], y: cy, w: w + 6, h: h + 4, dx: 0, dy: 0 });
   });
-  groups.forEach((g) => {
-    if (g.length < 2) return;
-    g.forEach((it, i) => {
-      const a = (i / g.length) * Math.PI * 2 - Math.PI / 2;
-      it.offset = [Math.cos(a) * 30, Math.sin(a) * 30];
-    });
-  });
-  return items;
+  for (let it = 0; it < 10; it++) {
+    let moved = false;
+    for (let i = 0; i < items.length; i++) {
+      for (let j = i + 1; j < items.length; j++) {
+        const a = items[i];
+        const b = items[j];
+        const ox = (a.w + b.w) / 2 - Math.abs(b.x + b.dx - (a.x + a.dx));
+        const oy = (a.h + b.h) / 2 - Math.abs(b.y + b.dy - (a.y + a.dy));
+        if (ox <= 0 || oy <= 0) continue;
+        moved = true;
+        if (ox < oy) {
+          const sgn = b.x + b.dx >= a.x + a.dx ? 1 : -1;
+          a.dx -= (sgn * ox) / 2; b.dx += (sgn * ox) / 2;
+        } else {
+          const sgn = b.y + b.dy >= a.y + a.dy ? 1 : -1;
+          a.dy -= (sgn * oy) / 2; b.dy += (sgn * oy) / 2;
+        }
+      }
+    }
+    if (!moved) break;
+  }
+  const cap = (v) => Math.max(-70, Math.min(70, v));
+  items.forEach((o) => o.m.setOffset([o.base[0] + cap(o.dx), o.base[1] + cap(o.dy)]));
 }
 
 // ---------------------------------------------------------------- sheets
@@ -216,11 +248,10 @@ export function MapScreen({ active }) {
         });
       });
     }
-    spread(want);
     const keep = new Set();
     want.forEach((w) => {
       keep.add(w.key);
-      const off = [w.offset?.[0] || 0, (w.offset?.[1] || 0) + (w.yOff || 0)];
+      const off = [0, w.yOff || 0];
       let m = markers.current.get(w.key);
       if (m && m._sig !== w.sig) { m.remove(); m = null; }
       if (!m) {
@@ -228,13 +259,25 @@ export function MapScreen({ active }) {
         node.style.zIndex = String(w.z);
         m = new window.maplibregl.Marker({ element: node, anchor: w.anchor, offset: off }).setLngLat([w.lng, w.lat]).addTo(map);
         m._sig = w.sig;
+        m._anchor = w.anchor;
         markers.current.set(w.key, m);
       } else {
-        m.setLngLat([w.lng, w.lat]).setOffset(off);
+        m.setLngLat([w.lng, w.lat]);
       }
+      m._base = off;
     });
     markers.current.forEach((m, k) => { if (!keep.has(k)) { m.remove(); markers.current.delete(k); } });
+    requestAnimationFrame(() => relax(map, markers.current));
   }, [posts, presence, friendships, slots, filter, me, tick]);
+
+  // Re-separate pins whenever the view settles.
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+    const onEnd = () => relax(map, markers.current);
+    map.on('moveend', onEnd);
+    return () => map.off('moveend', onEnd);
+  }, [ready]);
 
   const freeCount = friendships.filter((f) => f.state === 'friends' && freeState(slots[f.other_id]).free).length;
   const friendsLive = Object.values(presence).filter((r) => r.user_id !== me?.id && friendships.some((f) => f.state === 'friends' && f.other_id === r.user_id)).length;
@@ -272,7 +315,7 @@ export function MapScreen({ active }) {
       <span class="spacer"></span>
       <button class="chip is-ghost" role="switch" aria-checked=${!sharing} aria-label="Ghost mode"
         onClick=${() => (sharing ? goGhost() : shareSheet())}>
-        <${Icon} name="ghost" cls="sm" />Ghost <${Switch} on=${!sharing} cls="sm red" />
+        <${Icon} name="ghost" cls="sm" />Ghost <${Switch} on=${!sharing} cls="sm ghost" />
       </button>
       <a class="icon-btn" href="#/settings" aria-label="Settings"><${Icon} name="gear" /></a>
     </header>
