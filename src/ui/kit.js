@@ -1,7 +1,7 @@
 // Shared pieces of the darkroom: icons, film strip, avatars, photos, sheets.
 import { html, useEffect, useRef, useState } from 'preact-htm';
 import { initials, useToasts } from '../lib/core.js';
-import { usePhoto, cachedUrl } from '../lib/media.js';
+import { usePhoto } from '../lib/media.js';
 
 // ---------------------------------------------------------------- icons
 // One stroke family, 24 grid, 1.75 stroke.
@@ -66,18 +66,22 @@ export function FilmFrame({ children, stock = 'SPOTTED 400', frame, top = false,
 export const stockFor = (post) => (post?.is_demo ? 'DEMO 400' : 'SPOTTED 400');
 
 // ---------------------------------------------------------------- media
+// A photo "develops" out of the safelight the first time it's seen in a
+// session; after that it appears instantly.
+const developed = new Set();
 export function Photo({ path, demo, alt = '', cls = '', eager = false, onReady }) {
   const url = usePhoto(path, demo);
   const [loaded, setLoaded] = useState(false);
-  const wasCached = useRef(Boolean(cachedUrl(path, demo)) && document.readyState === 'complete');
+  const seen = useRef(developed.has(path));
   const img = useRef();
   useEffect(() => {
     if (img.current?.complete && img.current.naturalWidth) setLoaded(true);
   }, [url]);
   if (!url) return html`<div class=${'ph ' + cls} aria-label=${alt}></div>`;
-  return html`<img ref=${img} class=${`develop ${loaded ? 'is-in' : ''} ${cls}`} src=${url} alt=${alt}
+  const state = seen.current ? 'is-cached' : loaded ? 'is-in' : '';
+  return html`<img ref=${img} class=${`develop ${state} ${cls}`} src=${url} alt=${alt}
     loading=${eager ? 'eager' : 'lazy'} decoding="async"
-    onLoad=${() => { setLoaded(true); onReady?.(); }} data-cached=${wasCached.current ? '1' : undefined} />`;
+    onLoad=${() => { setLoaded(true); developed.add(path); onReady?.(); }} />`;
 }
 
 export function Avatar({ person, size = 44, cls = '', plain = false }) {
