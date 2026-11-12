@@ -36,7 +36,7 @@ export function SignIn({ error }) {
   const go = async () => {
     setBusy(true);
     const redirectTo = location.origin + location.pathname;
-    const { error: err } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo } });
+    const { error: err } = await sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo, queryParams: { prompt: 'select_account' } } });
     if (err) { setBusy(false); fail(err, 'Couldn’t open Google sign-in. Try again.'); }
   };
   return html`<main class="signin">
