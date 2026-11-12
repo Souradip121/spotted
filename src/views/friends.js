@@ -98,7 +98,7 @@ function FreeTill() {
   };
   const statusOn = mine?.free_until && new Date(mine.free_until) > now;
   return html`<div class="freebar" role="group" aria-label="Tell friends you're free">
-    <span class="h3 freebar-label">${statusOn ? `Free till ${fmtHour(new Date(mine.free_until))}` : st.free ? freeLabel(st).replace('free', 'Free') : 'Free now?'}</span>
+    <span class="h3 freebar-label">${statusOn ? `Free till ${fmtHour(new Date(mine.free_until))}` : st.free ? `Your week: ${freeLabel(st)}` : 'Free now?'}</span>
     ${opts.slice(0, 3).map((d) => html`<button class="chip sm" aria-pressed=${statusOn && new Date(mine.free_until).getHours() === d.getHours()} onClick=${() => set(d)}>till ${fmtHour(d)}</button>`)}
     ${statusOn ? html`<button class="chip sm" onClick=${() => set(null)} aria-label="Clear free status"><${Icon} name="x" cls="sm" /></button>` : null}
   </div>`;

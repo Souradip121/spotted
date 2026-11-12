@@ -503,6 +503,7 @@ body::after {
   scrollbar-width: none;
 }
 .chips::-webkit-scrollbar { display: none; }
+.chips::after { content: ""; flex: 0 0 6px; }
 .mapwrap {
   position: relative;
   flex: 1;

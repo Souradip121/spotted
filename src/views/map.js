@@ -119,7 +119,18 @@ function relax(map, markers) {
     if (!moved) break;
   }
   const cap = (v, n) => Math.max(-n, Math.min(n, v));
-  items.forEach((o) => o.m.setOffset([o.base[0] + cap(o.dx, 170), o.base[1] + cap(o.dy, 80)]));
+  items.forEach((o) => {
+    let dx = cap(o.dx, 170);
+    // Final say: the whole pin, label included, stays inside the panel
+    // whenever its anchor is on screen.
+    if (o.x >= 0 && o.x <= W) {
+      const left = o.x + dx - o.w / 2;
+      const right = o.x + dx + o.w / 2;
+      if (left < 4) dx += 4 - left;
+      else if (right > W - 4) dx -= right - (W - 4);
+    }
+    o.m.setOffset([o.base[0] + dx, o.base[1] + cap(o.dy, 80)]);
+  });
 }
 
 // ---------------------------------------------------------------- sheets

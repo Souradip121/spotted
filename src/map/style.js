@@ -126,7 +126,7 @@ export function darkroomStyle({ labels = true } = {}) {
         },
         paint: {
           'text-color': '#e2dcd2', 'text-halo-color': 'rgba(0,0,0,.9)', 'text-halo-width': 2.2, 'text-halo-blur': 1,
-          'text-opacity': ['interpolate', ['linear'], ['zoom'], 13.9, 0.9, 14.5, 0],
+          'text-opacity': ['interpolate', ['linear'], ['zoom'], 12.6, 0.9, 13.3, 0],
         },
       },
     ],
