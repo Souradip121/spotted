@@ -489,6 +489,9 @@ body::after {
   z-index: 1;
 }
 .mapscreen .topbar { position: relative; background: none; padding-bottom: 6px; }
+/* Hidden while another screen is open. MapLibre's credit sets its own
+   visibility, so hide every descendant too. */
+.mapscreen.off, .mapscreen.off * { visibility: hidden !important; }
 .chips {
   display: flex;
   gap: 8px;
@@ -901,3 +904,7 @@ body::after {
 @keyframes shimmer { to { background-position: -150% 0; } }
 .here-dot { width: 16px; height: 16px; border-radius: 50%; background: #f4efe6; box-shadow: 0 0 0 4px rgba(244, 239, 230, .25), 0 0 14px rgba(244, 239, 230, .6); }
 .post-photo .ph, .sheet-cell .ph { min-height: 100%; }
+
+/* Screenshot mode (?shot=N): no motion, everything already developed. */
+.shot *, .shot *::before, .shot *::after { animation: none !important; transition: none !important; }
+.shot .develop { opacity: 1; filter: none; }

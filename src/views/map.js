@@ -268,7 +268,7 @@ export function MapScreen({ active }) {
     }
   };
 
-  return html`<section class="mapscreen" aria-hidden=${active ? undefined : 'true'} style=${active ? '' : 'visibility:hidden'}>
+  return html`<section class=${`mapscreen ${active ? '' : 'off'}`} aria-hidden=${active ? undefined : 'true'}>
     <header class="topbar">
       <h1 class="wordmark">Spotted</h1>
       <span class="spacer"></span>

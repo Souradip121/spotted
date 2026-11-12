@@ -8,6 +8,7 @@ export const SHOT = Math.min(4, Math.max(1, Number(new URLSearchParams(location.
 if (SHOT > 1) {
   document.documentElement.style.zoom = String(SHOT);
   document.documentElement.style.setProperty('--shot', String(SHOT));
+  document.documentElement.classList.add('shot');
 }
 
 // ---------------------------------------------------------------- supabase
