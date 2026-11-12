@@ -704,7 +704,7 @@ body::after {
 .grid .who span { font: 500 .95rem/1.15 var(--font-ui); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .daycell {
   position: relative;
-  height: 50px;
+  height: 56px;
   border-radius: 8px;
   background: #121211;
   border: 1px solid #1d1c1b;

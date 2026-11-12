@@ -43,7 +43,7 @@ function DayCell({ grid, day, today, nowRow, mine, onEdit }) {
   return html`<div class=${`daycell ${today ? 'today' : ''} ${mine ? 'mine' : ''}`} onClick=${mine ? onEdit : undefined}
     role=${mine ? 'button' : undefined} tabindex=${mine ? 0 : undefined}
     aria-label=${`${DAYS[day]}: ${blocks.length ? blocks.map((b) => `${fmtHour(new Date(2000, 0, 1, 8 + b.start))} to ${fmtHour(new Date(2000, 0, 1, 8 + b.end))}`).join(', ') : 'busy'}`}>
-    ${blocks.map((b) => html`<span class="bar" style=${`top:calc(${(b.start / 12) * 100}% + 2px);height:calc(${((b.end - b.start) / 12) * 100}% - 4px)`}></span>`)}
+    ${blocks.map((b) => html`<span class="bar" style=${`top:calc(${(b.start / 12) * 100}% + 1px);height:max(3px, calc(${((b.end - b.start) / 12) * 100}% - 2px))`}></span>`)}
     ${today && nowRow != null ? html`<span class="now" style=${`top:${nowRow}%`}></span>` : null}
   </div>`;
 }
