@@ -1,3 +1,5 @@
+import { SHOT } from '../lib/core.js';
+
 // A darkroom basemap on OpenFreeMap's free vector tiles (OpenMapTiles schema).
 // No API key, and never the tile.openstreetmap.org servers.
 
@@ -146,6 +148,7 @@ export function createMap(container, opts = {}) {
     attributionControl: false,
     interactive: opts.interactive ?? true,
     fadeDuration: 150,
+    pixelRatio: (window.devicePixelRatio || 1) * SHOT,
   });
   map.touchZoomRotate.disableRotation();
   map.keyboard.disableRotation?.();

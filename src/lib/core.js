@@ -1,6 +1,15 @@
 // Core plumbing: Supabase client, a tiny store, hash routing, formatting.
 import { useEffect, useReducer, useRef, useState } from 'preact-htm';
 
+// ---------------------------------------------------------------- screenshot mode
+// ?shot=3 lays the app out at phone width but renders it 3x larger, for
+// crisp reel stills from a big emulated viewport. No effect otherwise.
+export const SHOT = Math.min(4, Math.max(1, Number(new URLSearchParams(location.search).get('shot')) || 1));
+if (SHOT > 1) {
+  document.documentElement.style.zoom = String(SHOT);
+  document.documentElement.style.setProperty('--shot', String(SHOT));
+}
+
 // ---------------------------------------------------------------- supabase
 const cfg = window.SPOTTED_CONFIG || {};
 export const configured = Boolean(cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase);
