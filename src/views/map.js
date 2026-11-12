@@ -148,6 +148,7 @@ export function MapScreen({ active }) {
   useEffect(() => {
     const map = createMap(el.current);
     mapRef.current = map;
+    if (/[?&]debug/.test(location.search)) window.__spottedMap = map;
     const far = () => el.current?.classList.toggle('zoom-far', map.getZoom() < 13.2);
     map.on('zoom', far);
     map.on('load', () => {
