@@ -216,7 +216,8 @@ body::after {
 .chip[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; box-shadow: 0 6px 18px -8px rgba(227, 38, 43, .9); }
 .chip .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); box-shadow: 0 0 0 3px rgba(69, 196, 106, .18); }
 .chip[aria-pressed="true"] .dot { background: #fff; box-shadow: none; }
-.chip.is-ghost { padding-right: 7px; gap: 10px; }
+.chip.is-ghost { padding: 0 6px 0 11px; gap: 7px; height: 36px; font-size: .92rem; }
+.topbar .chip.is-ghost { margin-right: 2px; }
 
 .switch {
   position: relative;

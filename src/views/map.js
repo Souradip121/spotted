@@ -150,7 +150,12 @@ export function MapScreen({ active }) {
     mapRef.current = map;
     const far = () => el.current?.classList.toggle('zoom-far', map.getZoom() < 13.2);
     map.on('zoom', far);
-    map.on('load', () => { far(); setReady(true); });
+    map.on('load', () => {
+      far();
+      setReady(true);
+      // Start with the map credit folded away (it stays one tap from the "i").
+      el.current?.querySelector('.maplibregl-ctrl-attrib')?.classList.remove('maplibregl-compact-show');
+    });
     return () => { map.remove(); mapRef.current = null; };
   }, []);
 
@@ -165,6 +170,18 @@ export function MapScreen({ active }) {
     addEventListener('spotted:fly', onFly);
     return () => removeEventListener('spotted:fly', onFly);
   }, []);
+
+  // First time there's something to show, frame all of it.
+  const framed = useRef(false);
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !ready || framed.current || !postsLoaded) return;
+    const pts = [...posts.map((p) => [p.lng, p.lat]), ...Object.values(presence).map((r) => [r.lng, r.lat])];
+    framed.current = true;
+    if (pts.length < 2) return;
+    const b = pts.reduce((bb, c) => bb.extend(c), new window.maplibregl.LngLatBounds(pts[0], pts[0]));
+    map.fitBounds(b, { padding: { top: 70, bottom: 60, left: 44, right: 44 }, maxZoom: 15, duration: 0 });
+  }, [ready, postsLoaded, posts, presence]);
 
   // Keep DOM markers in sync with the store.
   useEffect(() => {
@@ -246,17 +263,17 @@ export function MapScreen({ active }) {
     <header class="topbar">
       <h1 class="wordmark">Spotted</h1>
       <span class="spacer"></span>
-      <a class="icon-btn" href="#/search" aria-label="Find people"><${Icon} name="search" /></a>
+      <button class="chip is-ghost" role="switch" aria-checked=${!sharing} aria-label="Ghost mode"
+        onClick=${() => (sharing ? goGhost() : shareSheet())}>
+        <${Icon} name="ghost" cls="sm" />Ghost <${Switch} on=${!sharing} cls="sm red" />
+      </button>
       <a class="icon-btn" href="#/settings" aria-label="Settings"><${Icon} name="gear" /></a>
     </header>
     <div class="chips" role="toolbar" aria-label="Map filters">
       <button class="chip" aria-pressed=${filter === 'friends'} onClick=${() => setFilter('friends')}><${Icon} name="users" cls="sm" />Friends</button>
       <button class="chip" aria-pressed=${filter === 'photos'} onClick=${() => setFilter('photos')}><${Icon} name="image" cls="sm" />Photos</button>
       <button class="chip" aria-pressed=${filter === 'free'} onClick=${() => setFilter('free')}><span class="dot"></span>Free now${freeCount ? html` <span class="num">${freeCount}</span>` : ''}</button>
-      <button class="chip is-ghost" aria-pressed="false" role="switch" aria-checked=${!sharing}
-        onClick=${() => (sharing ? goGhost() : shareSheet())}>
-        Ghost mode <${Switch} on=${!sharing} cls="sm red" />
-      </button>
+      <a class="chip" href="#/search" aria-label="Find people"><${Icon} name="userPlus" cls="sm" /></a>
     </div>
     <div class="mapwrap">
       <div class="map" ref=${el} role="region" aria-label="Map of Kalyani"></div>
