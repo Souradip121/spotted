@@ -79,6 +79,8 @@ The hosted copy ships with **demo content** so there's something to see before r
 - Make the demo people your friends: sign in once, then run [`supabase/demo-connect.sql`](supabase/demo-connect.sql) with your email filled in.
 - **Remove all of it:** run [`supabase/demo-remove.sql`](supabase/demo-remove.sql), then delete the `demo/` folder.
 
+**Screenshots:** add `?shot=3` to the URL (e.g. `…/spotted/?shot=3#/friends/free`) and open it in a 1125×2436 window. The 375 px phone layout renders at 3×, with motion off.
+
 ---
 
 ## Project layout
