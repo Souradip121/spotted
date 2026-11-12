@@ -176,11 +176,13 @@ export function MapScreen({ active }) {
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !ready || framed.current || !postsLoaded) return;
-    const pts = [...posts.map((p) => [p.lng, p.lat]), ...Object.values(presence).map((r) => [r.lng, r.lat])];
+    const [[w, so], [e, n]] = TOWN.bounds;
+    const pts = [...posts.map((p) => [p.lng, p.lat]), ...Object.values(presence).map((r) => [r.lng, r.lat])]
+      .filter(([x, y]) => x > w && x < e && y > so && y < n);
     framed.current = true;
     if (pts.length < 2) return;
     const b = pts.reduce((bb, c) => bb.extend(c), new window.maplibregl.LngLatBounds(pts[0], pts[0]));
-    map.fitBounds(b, { padding: { top: 70, bottom: 60, left: 44, right: 44 }, maxZoom: 15, duration: 0 });
+    map.fitBounds(b, { padding: { top: 60, bottom: 70, left: 64, right: 64 }, maxZoom: 15, duration: 0 });
   }, [ready, postsLoaded, posts, presence]);
 
   // Keep DOM markers in sync with the store.
