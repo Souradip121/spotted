@@ -153,8 +153,6 @@ export function MapScreen({ active }) {
     map.on('load', () => {
       far();
       setReady(true);
-      // Start with the map credit folded away (it stays one tap from the "i").
-      el.current?.querySelector('.maplibregl-ctrl-attrib')?.classList.remove('maplibregl-compact-show');
     });
     return () => { map.remove(); mapRef.current = null; };
   }, []);

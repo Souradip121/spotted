@@ -15,7 +15,7 @@ const GoogleG = () => html`<svg width="20" height="20" viewBox="0 0 48 48" aria-
 function DriftingMap() {
   const el = useRef();
   useEffect(() => {
-    const map = createMap(el.current, { interactive: false, zoom: 14.1, center: [88.4425, 22.9735] });
+    const map = createMap(el.current, { interactive: false, zoom: 14.1, center: [88.4425, 22.9735], attribution: 'top-right' });
     let raf;
     let t0;
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
