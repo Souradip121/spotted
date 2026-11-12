@@ -122,18 +122,18 @@ export function SettingsScreen() {
     <header class="topbar"><button class="icon-btn" onClick=${() => back('/')} aria-label="Back"><${Icon} name="back" /></button><h1 class="h2">Settings</h1></header>
     <div class="page stack" style="--gap:28px">
       <div>
-        <h2 class="edge" style="margin:0 0 4px">Location</h2>
+        <h2 class="h3 muted" style="margin:0 0 2px">Location</h2>
         <button class="setting button" role="switch" aria-checked=${Boolean(sharing)} onClick=${() => (sharing ? goGhost() : shareSheet())}>
           <${Icon} name="pin" />
           <span class="grow"><span class="t1" style="display:block">Share live location</span><span class="t2">${sharing ? `On · switches off at ${fmtHour(new Date(sharing.expiresAt))}` : 'Off. Friends only, about 100 m, max 2 hours.'}</span></span>
-          <${Switch} on=${Boolean(sharing)} />
+          <${Switch} on=${Boolean(sharing)} cls="live" />
         </button>
         <button class="setting button" onClick=${() => (sharing ? goGhost() : toast('You’re already a ghost. Nobody can see your location.'))}>
           <${Icon} name="ghost" /><span class="grow"><span class="t1" style="display:block">Ghost mode</span><span class="t2">One tap deletes your live location.</span></span>
         </button>
       </div>
       <div>
-        <h2 class="edge" style="margin:0 0 4px">Account</h2>
+        <h2 class="h3 muted" style="margin:0 0 2px">Account</h2>
         <a class="setting" href="#/profile/edit" style="text-decoration:none"><${Icon} name="edit" /><span class="grow t1">Edit profile</span></a>
         <button class="setting button" onClick=${() => setShowBlocked((v) => !v)} aria-expanded=${showBlocked}><${Icon} name="block" /><span class="grow t1">Blocked people</span></button>
         ${showBlocked ? html`<div style="padding:4px 0 8px 38px"><${Blocked} /></div>` : null}
@@ -145,7 +145,7 @@ export function SettingsScreen() {
         </button>
       </div>
       <div>
-        <h2 class="edge" style="margin:0 0 10px">How Spotted keeps you safe</h2>
+        <h2 class="h3 muted" style="margin:0 0 10px">How Spotted keeps you safe</h2>
         <ul class="stack" style="--gap:10px;list-style:none;margin:0;padding:0">
           ${[
             ['ghost', 'Live location is off by default, friends-only, about 100 m, and off after 2 hours. No history is kept.'],

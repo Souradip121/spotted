@@ -831,7 +831,7 @@ body::after {
 .signin .form { padding: 22px 22px 18px; background: rgba(5, 5, 5, .96); display: grid; gap: 16px; }
 .signin .safety { display: grid; gap: 8px; padding: 0; margin: 0; list-style: none; }
 .signin .safety li { display: flex; gap: 10px; align-items: flex-start; font: 400 .9rem/1.35 var(--font-ui); color: var(--text-2); }
-.signin .safety .icon { width: 18px; height: 18px; color: var(--amber); margin-top: 1px; }
+.signin .safety .icon { width: 18px; height: 18px; color: var(--text-2); margin-top: 1px; }
 .signin footer { padding: 12px 22px calc(16px + var(--safe-b)); background: rgba(5, 5, 5, .96); }
 .error-text { color: #ff8a8c; font: 500 .92rem/1.35 var(--font-ui); }
 
@@ -935,3 +935,5 @@ body::after {
 .input:-webkit-autofill, .input:-webkit-autofill:focus { -webkit-box-shadow: 0 0 0 60px var(--ink-2) inset; -webkit-text-fill-color: var(--text); caret-color: var(--red-hot); }
 /* Expanded map credit never runs under the locate button. */
 .maplibregl-ctrl-attrib.maplibregl-compact-show { max-width: calc(100% - 80px); }
+/* Live sharing is a red (safelight) state, never green. */
+.switch.live.on { background: var(--red); border-color: var(--red); }

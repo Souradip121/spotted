@@ -175,7 +175,7 @@ function ShareRow() {
   return html`<button class="setting button" role="switch" aria-checked=${Boolean(sharing)} onClick=${() => (sharing ? goGhost() : shareSheet())}>
     <${Icon} name="pin" />
     <span class="grow"><span class="t1" style="display:block">Share live location</span><span class="t2">${sharing ? `On · switches off at ${fmtHour(new Date(sharing.expiresAt))}` : 'With friends only · off by default'}</span></span>
-    <${Switch} on=${Boolean(sharing)} />
+    <${Switch} on=${Boolean(sharing)} cls="live" />
   </button>`;
 }
 
