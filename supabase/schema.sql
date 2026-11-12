@@ -203,7 +203,8 @@ begin
     new.thumb_path := old.thumb_path;
     new.is_demo    := old.is_demo;
     new.frame_no   := old.frame_no;
-    new.created_at := old.created_at;
+    -- Demo rows may be re-dated by demo-wake.sql; real posts keep their time.
+    if not old.is_demo then new.created_at := old.created_at; end if;
   else
     select coalesce(max(p.frame_no), 0) + 1 into new.frame_no
       from public.sp_posts p where p.author_id = new.author_id;
