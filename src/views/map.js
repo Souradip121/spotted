@@ -89,7 +89,7 @@ function relax(map, markers) {
     const cy = m._anchor === 'bottom' ? p.y + base[1] - h / 2 : p.y + base[1] + h / 2;
     items.push({ m, base, x: p.x + base[0], y: cy, w: w + 6, h: h + 4, dx: 0, dy: 0 });
   });
-  for (let it = 0; it < 10; it++) {
+  for (let it = 0; it < 14; it++) {
     let moved = false;
     for (let i = 0; i < items.length; i++) {
       for (let j = i + 1; j < items.length; j++) {
@@ -108,18 +108,18 @@ function relax(map, markers) {
         }
       }
     }
+    // Keep pins (and their labels) inside the panel as a hard constraint,
+    // so the next pass separates anything the edge pushed together.
+    items.forEach((o) => {
+      const left = o.x + o.dx - o.w / 2;
+      const right = o.x + o.dx + o.w / 2;
+      if (left < 4 && o.x > -o.w / 2) { o.dx += 4 - left; moved = true; }
+      else if (right > W - 4 && o.x < W + o.w / 2) { o.dx -= right - (W - 4); moved = true; }
+    });
     if (!moved) break;
   }
-  const cap = (v) => Math.max(-70, Math.min(70, v));
-  items.forEach((o) => {
-    let dx = cap(o.dx);
-    // Keep labels inside the panel.
-    const left = o.x + dx - o.w / 2;
-    const right = o.x + dx + o.w / 2;
-    if (left < 4) dx += Math.min(4 - left, 90);
-    else if (right > W - 4) dx -= Math.min(right - (W - 4), 90);
-    o.m.setOffset([o.base[0] + dx, o.base[1] + cap(o.dy)]);
-  });
+  const cap = (v, n) => Math.max(-n, Math.min(n, v));
+  items.forEach((o) => o.m.setOffset([o.base[0] + cap(o.dx, 170), o.base[1] + cap(o.dy, 80)]));
 }
 
 // ---------------------------------------------------------------- sheets
