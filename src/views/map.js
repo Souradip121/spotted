@@ -111,7 +111,15 @@ function relax(map, markers) {
     if (!moved) break;
   }
   const cap = (v) => Math.max(-70, Math.min(70, v));
-  items.forEach((o) => o.m.setOffset([o.base[0] + cap(o.dx), o.base[1] + cap(o.dy)]));
+  items.forEach((o) => {
+    let dx = cap(o.dx);
+    // Keep labels inside the panel.
+    const left = o.x + dx - o.w / 2;
+    const right = o.x + dx + o.w / 2;
+    if (left < 4) dx += Math.min(4 - left, 90);
+    else if (right > W - 4) dx -= Math.min(right - (W - 4), 90);
+    o.m.setOffset([o.base[0] + dx, o.base[1] + cap(o.dy)]);
+  });
 }
 
 // ---------------------------------------------------------------- sheets
