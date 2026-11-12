@@ -148,7 +148,6 @@ export function MapScreen({ active }) {
   useEffect(() => {
     const map = createMap(el.current);
     mapRef.current = map;
-    if (/[?&]debug/.test(location.search)) window.__spottedMap = map;
     const far = () => el.current?.classList.toggle('zoom-far', map.getZoom() < 13.2);
     map.on('zoom', far);
     map.on('load', () => {
@@ -182,6 +181,7 @@ export function MapScreen({ active }) {
       .filter(([x, y]) => x > w && x < e && y > so && y < n);
     framed.current = true;
     if (pts.length < 2) return;
+    map.resize(); // the container may have changed size before the first frame
     const b = pts.reduce((bb, c) => bb.extend(c), new window.maplibregl.LngLatBounds(pts[0], pts[0]));
     map.fitBounds(b, { padding: { top: 60, bottom: 70, left: 64, right: 64 }, maxZoom: 15, duration: 0 });
   }, [ready, postsLoaded, posts, presence]);
