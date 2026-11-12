@@ -578,7 +578,7 @@ body::after {
 .maplibregl-canvas:focus-visible { outline: 2px solid var(--red-hot); outline-offset: -2px; }
 
 /* Pins */
-.pin { position: absolute; cursor: pointer; will-change: transform; }
+.pin { position: absolute; cursor: pointer; will-change: transform; text-decoration: none; color: inherit; }
 .pin-photo {
   width: 54px;
   height: 66px;

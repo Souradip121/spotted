@@ -101,8 +101,8 @@ insert into public.sp_presence (user_id, lat, lng, expires_at) values
 on conflict (user_id) do update set lat = excluded.lat, lng = excluded.lng, expires_at = excluded.expires_at;
 
 update public.sp_free_slots set free_until = case user_id
-    when 'de300000-0000-4000-a000-000000000001' then date_trunc('hour', now()) + interval '2 hours'
-    when 'de300000-0000-4000-a000-000000000003' then date_trunc('hour', now()) + interval '3 hours'
+    when 'de300000-0000-4000-a000-000000000001' then (date_trunc('hour', now() at time zone 'Asia/Kolkata') + interval '2 hours') at time zone 'Asia/Kolkata'
+    when 'de300000-0000-4000-a000-000000000003' then (date_trunc('hour', now() at time zone 'Asia/Kolkata') + interval '3 hours') at time zone 'Asia/Kolkata'
     when 'de300000-0000-4000-a000-000000000002' then now() + interval '15 hours'
     when 'de300000-0000-4000-a000-000000000004' then now() + interval '15 hours'
     else null end
