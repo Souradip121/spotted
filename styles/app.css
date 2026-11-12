@@ -656,7 +656,7 @@ body::after {
 .author .when { font: 400 .86rem/1.2 var(--font-ui); color: var(--text-3); }
 .caption { font-size: 1.12rem; line-height: 1.4; margin: 0; text-wrap: pretty; }
 .actions { display: flex; align-items: center; gap: 18px; }
-.act { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font: 500 1.02rem/1 var(--font-ui); color: var(--text); font-variant-numeric: tabular-nums; }
+.act { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; text-decoration: none; font: 500 1.02rem/1 var(--font-ui); color: var(--text); font-variant-numeric: tabular-nums; }
 .act .icon { width: 26px; height: 26px; }
 .act.liked .icon { fill: var(--red); stroke: var(--red); }
 .act.pop .icon { animation: pop .45s var(--ease); }

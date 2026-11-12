@@ -19,3 +19,23 @@ update public.sp_free_slots set free_until = case user_id
     when 'de300000-0000-4000-a000-000000000004' then now() + interval '15 hours'
     else null end
   where user_id in (select id from public.sp_profiles where is_demo);
+
+-- Keep the demo frames and comments looking recent (same spacing as the seed).
+update public.sp_posts p set created_at = now() - v.ago::interval
+  from (values
+    ('de3a0000-0000-4000-a000-000000000001', '2 hours'), ('de3a0000-0000-4000-a000-000000000002', '5 hours'),
+    ('de3a0000-0000-4000-a000-000000000003', '1 day 2 hours'), ('de3a0000-0000-4000-a000-000000000004', '3 hours'),
+    ('de3a0000-0000-4000-a000-000000000005', '1 day 5 hours'), ('de3a0000-0000-4000-a000-000000000006', '2 days'),
+    ('de3a0000-0000-4000-a000-000000000007', '4 days'), ('de3a0000-0000-4000-a000-000000000008', '6 hours'),
+    ('de3a0000-0000-4000-a000-000000000009', '8 hours')
+  ) as v(id, ago)
+ where p.id = v.id::uuid and p.is_demo;
+
+update public.sp_comments c set created_at = now() - v.ago::interval
+  from (values
+    ('de3c0000-0000-4000-a000-000000000001', '1 hour 50 minutes'), ('de3c0000-0000-4000-a000-000000000002', '1 hour 10 minutes'),
+    ('de3c0000-0000-4000-a000-000000000003', '2 hours 30 minutes'), ('de3c0000-0000-4000-a000-000000000004', '2 hours 20 minutes'),
+    ('de3c0000-0000-4000-a000-000000000005', '1 day'), ('de3c0000-0000-4000-a000-000000000006', '1 day 20 hours'),
+    ('de3c0000-0000-4000-a000-000000000007', '7 hours')
+  ) as v(id, ago)
+ where c.id = v.id::uuid;
